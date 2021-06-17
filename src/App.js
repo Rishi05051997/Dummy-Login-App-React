@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-
+import AuthContext from './Context/auth-context';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 import MainHeader from './components/MainHeader/MainHeader';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
 
   //// useEffect() is usefull for any change detection
   useEffect(() => {
     const storedUserLoggedInInfo = localStorage.getItem('isLoggedIn');
-    if(storedUserLoggedInInfo === '1'){
+    if (storedUserLoggedInInfo === '1') {
       setIsLoggedIn(true);
     }
   }, []);
@@ -29,13 +29,18 @@ const App = () => {
   };
 
   return (
-    <React.Fragment>
-      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
-      <main>
-        {!isLoggedIn && <Login onLogin={loginHandler} />}
-        {isLoggedIn && <Home onLogout={logoutHandler} />}
-      </main>
-    </React.Fragment>
+    
+      <AuthContext.Provider value={{
+        isLoggedIn: isLoggedIn,
+        onLogout: logoutHandler
+      }}>
+        <MainHeader  />
+        <main>
+          {!isLoggedIn && <Login onLogin={loginHandler} />}
+          {isLoggedIn && <Home onLogout={logoutHandler} />}
+        </main>
+      </AuthContext.Provider>
+    
   );
 }
 

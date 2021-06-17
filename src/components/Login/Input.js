@@ -1,7 +1,13 @@
-import React from 'react'
+import React, {useRef, useEffect} from 'react'
 import classes from './Login.module.css';
 
 export default function Input(props) {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [])
+  
     return (
         <div
           className={`${classes.control} ${
@@ -10,6 +16,7 @@ export default function Input(props) {
         >
           <label htmlFor={props.id}>E-Mail</label>
           <input
+            ref={inputRef}
             type="email"
             id={props.id}
             value={props.value}
